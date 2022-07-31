@@ -1,4 +1,6 @@
 <?php
+    include_once 'user.php';
+
     $host = 'localhost';
     $dbname = 'testdb';
     $username = 'root';
@@ -10,4 +12,9 @@
     } catch (PDOException $pe) {
         die("Could not connect to the database $dbname :" . $pe->getMessage());
     }
+
+    $user = User::fromId($conn, 45);
+    $user1 = User::fromFields($conn, 2, 2, "2015-09-12", 1, "Gomel");
+    // print_r($user);
+    print_r($user1);
 ?>
