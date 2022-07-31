@@ -15,6 +15,6 @@
 
     $user = User::fromId($conn, 45);
     $user1 = User::fromFields($conn, 2, 2, "2015-09-12", 1, "Gomel");
-    // print_r($user);
+    print_r($user);
     print_r($user1);
 ?>
