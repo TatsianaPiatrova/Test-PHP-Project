@@ -1,7 +1,7 @@
 <!-- /** 
 * TODO:
 * [+] Сохранение полей экземпляра класса в БД;
-* [*] Удаление человека из БД в соответствии с id объекта;
+* [+] Удаление человека из БД в соответствии с id объекта;
 * [+] static преобразование даты рождения в возраст (полных лет);
 * [+] static преобразование пола из двоичной системы в текстовую
 (муж, жен);
@@ -9,7 +9,7 @@
 информацией, либо берет информацию из БД по id (предусмотреть
 валидацию данных);
 * [*] Форматирование человека с преобразованием возраста и (или) пола
-(п.3 и п.4) в зависимотси от параметров (возвращает новый
+(п.3 и п.4) в зависимости от параметров (возвращает новый
 экземпляр StdClass со всеми полями изначального класса).
  */ -->
 
@@ -36,8 +36,8 @@
             $this->id = $id;       
         }
 
-        public static function fromId($db, $id)
-        {
+        public static function fromId($db, $id){
+
             $query = "SELECT
                         name, last_name, date_of_birth, sex, city
                     FROM
@@ -75,6 +75,7 @@
         }
 
         public static function fromFields($db, $name, $last_name, $date_of_birth, $sex, $city){
+
             if (!is_numeric($name) && !is_numeric($last_name)){
                 $query = "INSERT INTO
                             user
@@ -98,6 +99,25 @@
             else{
                 echo "Invalid name or last name";
             }
+        }
+
+        function delete() {
+
+            $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+    
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(1, $this->id);
+    
+            if ($result = $stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function toString(){
+            echo "Name - " . $this->name . ", last name - " . $this->last_name . ", age - " 
+                    . $this->date_of_birth . ", sex - " . $this->sex . ", city - " . $this->city;
         }
     }
 ?>
