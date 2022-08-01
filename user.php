@@ -1,17 +1,22 @@
-<!-- /** 
-* TODO:
-* [+] Сохранение полей экземпляра класса в БД;
-* [+] Удаление человека из БД в соответствии с id объекта;
-* [+] static преобразование даты рождения в возраст (полных лет);
-* [+] static преобразование пола из двоичной системы в текстовую
+<!-- 
+Автор: Петрова Татьяна
+
+Дата реализации: 01.08.2022 
+   
+Класс должен иметь поля:
+id, имя, фамилия, дата рождения, пол(0,1), город рождения
+Класс должен иметь методы:
+1. Сохранение полей экземпляра класса в БД;
+2. Удаление человека из БД в соответствии с id объекта;
+3. static преобразование даты рождения в возраст (полных лет);
+4. static преобразование пола из двоичной системы в текстовую
 (муж, жен);
-* [+-] Конструктор класса либо создает человека в БД с заданной
+5. Конструктор класса либо создает человека в БД с заданной
 информацией, либо берет информацию из БД по id (предусмотреть
 валидацию данных);
-* [*] Форматирование человека с преобразованием возраста и (или) пола
-(п.3 и п.4) в зависимости от параметров (возвращает новый
-экземпляр StdClass со всеми полями изначального класса).
- */ -->
+6. Форматирование человека с преобразованием возраста и (или) пола
+(п.3 и п.4) в зависимотси от параметров (возвращает новый
+экземпляр StdClass со всеми полями изначального класса) -->
 
 <?php
     class User{
@@ -91,6 +96,7 @@
                 $stmt->bindParam(":city", $city);
 
                 if ($stmt->execute()) {
+                    $id = $db->lastInsertId();
                     return new User($db, $name, $last_name, $date_of_birth, $sex, $city, $id);
                 } else {
                     return false;
@@ -115,9 +121,43 @@
             }
         }
 
+        function update($name, $last_name, $date_of_birth, $sex, $city) {
+
+            $query = "UPDATE
+                        " . $this->table_name . "
+                    SET
+                        name = :name,
+                        last_name = :last_name,
+                        date_of_birth = :date_of_birth,
+                        sex = :sex,
+                        city = :city
+                    WHERE
+                        id = :id";
+        
+            $stmt = $this->conn->prepare($query);
+        
+            $this->name = $name;
+            $this->last_name = $last_name;
+            $this->date_of_birth = $date_of_birth;
+            $this->sex = $sex;
+            $this->city = $city;
+        
+            $stmt->bindParam(":name", $this->name);
+            $stmt->bindParam(":last_name", $this->last_name);
+            $stmt->bindParam(":date_of_birth", $this->date_of_birth);
+            $stmt->bindParam(":sex", $this->sex);
+            $stmt->bindParam(":city", $this->city);
+            $stmt->bindParam(":id", $this->id);
+
+            if ($stmt->execute()) {
+                return new StdClass($name, $last_name, $date_of_birth, $sex, $city);
+            }
+            return false;
+        }
+
         function toString(){
             echo "Name - " . $this->name . ", last name - " . $this->last_name . ", age - " 
-                    . $this->date_of_birth . ", sex - " . $this->sex . ", city - " . $this->city;
+                    . $this->date_of_birth . ", sex - " . $this->sex . ", city - " . $this->city . "id - " . $this->id;
         }
     }
 ?>

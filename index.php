@@ -13,8 +13,10 @@
         die("Could not connect to the database $dbname :" . $pe->getMessage());
     }
 
-    $user = User::fromId($conn, 47);
-    // $user1 = User::fromFields($conn, 2, 2, "2015-09-12", 1, "Gomel");
-    $user->delete();
+    $user = User::fromId($conn, 49);
     $user->toString();
+    $user1 = User::fromFields($conn, "valeria", "lev", "1915-09-12", 1, "Gomel");
+    $user1->toString();
+    $user1->update("vasya", "alex", "2019-09-10", 0, "Moscow");
+    $user1->toString();
 ?>
