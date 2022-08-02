@@ -24,6 +24,7 @@
     // $user1->toString();
     // $user1->update("vasya", "alex", "2019-09-10", 0, "Moscow");
     // $user1->toString();
-    $array1 = ArrayId::withNumber($conn, 50);
+    $array1 = ArrayId::withNumber($conn, 50, "<");
     print_r($array1);
+    $array1->getArray();
 ?>
