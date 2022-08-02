@@ -3,7 +3,7 @@
 выражений больше, меньше, не равно);
 [+] Получение массива экземпляров класса 1 из массива с id людей
 полученного в конструкторе;
-[*] Удаление людей из БД с помощью экземпляров класса 1 в
+[+] Удаление людей из БД с помощью экземпляров класса 1 в
 соответствии с массивом, полученным в конструкторе. -->
 
 <?php
@@ -69,7 +69,15 @@
             for($i = 0; $i<count($this->array); $i++){
                 $arrayUsers[] = User::fromId($this->conn, $this->array[$i]);
             }  
-            print_r($arrayUsers);          
+            print_r($arrayUsers);   
+            return $arrayUsers;       
+        }
+
+        function deleteArray(){
+            $deleteArray = $this->getArray();
+            for($i = 0; $i<count($deleteArray); $i++){
+                $deleteArray[$i]->delete();
+            } 
         }
     }
 ?>

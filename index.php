@@ -27,4 +27,5 @@
     $array1 = ArrayId::withNumber($conn, 50, "<");
     print_r($array1);
     $array1->getArray();
+    $array1->deleteArray();
 ?>
